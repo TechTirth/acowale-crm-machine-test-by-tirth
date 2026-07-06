@@ -1,6 +1,3 @@
-# Engineering Decision Log
-
-Short, honest answers to the prompt's questions.
 
 ### 1. Why this technology stack?
 
