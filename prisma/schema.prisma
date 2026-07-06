@@ -1,0 +1,35 @@
+// Prisma schema for Acowale CRM.
+//
+// Default provider is PostgreSQL (production: Neon serverless).
+// For a zero-setup local run you can swap provider to "sqlite" and set
+// DATABASE_URL="file:./dev.db" — the model below is portable across both.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  BUG
+  FEATURE
+  IMPROVEMENT
+  PRAISE
+  OTHER
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  category  Category
+  comment   String
+  email     String? // optional — lets the team follow up if the user opts in
+  createdAt DateTime @default(now())
+
+  // Indexes serve the dashboard's two hot paths: sort-by-recent and
+  // group-by-category analytics.
+  @@index([createdAt])
+  @@index([category])
+}
